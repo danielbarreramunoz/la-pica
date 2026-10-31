@@ -1,0 +1,10 @@
+{
+  "project_name": "La Picá",
+  "central_harness_path": "C:/misapps/arnes-agentico-main",
+  "structure": {
+    "type": "decoupled",
+    "frontend": "./frontend",
+    "backend": "./backend"
+  },
+  "specs": ["./.harness/design-system.md", "./.harness/domain-rules.md"]
+}
