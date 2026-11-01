@@ -57,7 +57,12 @@ export default function MenuBuilderPage() {
 
   return (
     <div className="space-y-5">
-      <h1 className="font-sans text-2xl font-bold">Programador de menú del día</h1>
+      <div className="border-b border-stone-200 pb-4">
+        <p className="font-mono text-xs font-semibold uppercase tracking-widest text-[#E65100]">
+          Menú del día · Programación
+        </p>
+        <h1 className="mt-1 font-sans text-3xl font-bold tracking-tight">Programador de menú del día</h1>
+      </div>
 
       <div className="flex flex-wrap items-end gap-3">
         <div className="w-52">

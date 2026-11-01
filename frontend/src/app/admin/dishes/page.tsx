@@ -92,21 +92,26 @@ export default function DishesPage() {
 
   return (
     <div className="space-y-5">
-      <div className="flex items-center justify-between">
-        <h1 className="font-sans text-2xl font-bold">Catálogo maestro</h1>
-        <Button onClick={openCreate}>Nuevo plato</Button>
+      <div className="border-b border-stone-200 pb-4">
+        <p className="font-mono text-xs font-semibold uppercase tracking-widest text-[#E65100]">
+          Catálogo · Platos
+        </p>
+        <div className="mt-1 flex flex-wrap items-center justify-between gap-3">
+          <h1 className="font-sans text-3xl font-bold tracking-tight">Catálogo maestro</h1>
+          <Button onClick={openCreate} size="lg">Nuevo plato</Button>
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {dishes.map((d) => (
-          <div key={d.id} className="rounded-xl border border-stone-200 bg-white p-4">
-            <div className="flex h-20 items-center justify-center rounded-lg bg-stone-100 font-sans text-sm text-stone-400">
+          <div key={d.id} className="rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
+            <div className="flex h-20 items-center justify-center rounded-lg bg-stone-100 font-sans text-sm font-medium text-stone-600">
               {d.image_url ? "Imagen" : "Sin imagen · placeholder"}
             </div>
-            <p className="mt-3 font-sans text-base font-semibold">{d.name}</p>
-            <p className="font-sans text-sm text-stone-500">{d.description}</p>
-            <p className="mt-2 font-sans text-xs text-stone-500">{d.category}</p>
-            <p className="font-mono text-lg font-bold text-[#E65100]">
+            <p className="mt-3 font-sans text-base font-semibold text-stone-900">{d.name}</p>
+            <p className="font-sans text-sm text-stone-600">{d.description}</p>
+            <p className="mt-1 font-sans text-xs font-medium uppercase tracking-wide text-stone-600">{d.category}</p>
+            <p className="font-mono text-lg font-bold tabular-nums text-[#E65100]">
               ${d.base_price.toLocaleString("es-CL")}
             </p>
             <div className="mt-3 flex gap-2">

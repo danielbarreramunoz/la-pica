@@ -56,10 +56,16 @@ export default function CashierPage() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl space-y-5 px-4 py-6">
-      <h1 className="font-sans text-2xl font-bold">Caja · Cierre de mesa</h1>
-      <div className="flex items-center gap-3">
-        <span className="font-sans text-sm">Propina 10%</span>
+    <div className="min-h-screen bg-stone-50 font-sans text-stone-900">
+      <div className="mx-auto max-w-5xl space-y-5 px-4 py-6">
+      <div className="border-b border-stone-200 pb-4">
+        <p className="font-mono text-xs font-semibold uppercase tracking-widest text-[#2E7D32]">
+          Panel operativo · Cobro
+        </p>
+        <h1 className="mt-1 font-sans text-3xl font-bold tracking-tight">Caja · Cierre de mesa</h1>
+      </div>
+      <div className="flex items-center gap-3 rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
+        <span className="font-sans text-sm font-medium text-stone-800">Propina 10%</span>
         <Switch checked={tipOn} onChange={setTipOn} label="Propina" />
       </div>
       {byTable.map(([table, list]) => {
@@ -67,46 +73,47 @@ export default function CashierPage() {
         const tip = tipOn ? Math.round(subtotal * 0.1) : 0;
         const total = subtotal + tip;
         return (
-          <div key={table} className="rounded-xl border border-stone-200 bg-white p-4">
-            <div className="flex items-center justify-between">
-              <p className="font-mono text-xl font-bold">Mesa {table}</p>
+          <div key={table} className="rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
+            <div className="flex items-center justify-between gap-2">
+              <p className="font-mono text-xl font-bold tabular-nums text-stone-900">Mesa {table}</p>
               <div className="flex gap-2">
                 {list.map((o) => (
                   <Badge key={o.id} status={o.status} />
                 ))}
               </div>
             </div>
-            <div className="mt-2 space-y-1">
+            <div className="mt-2 space-y-1 border-t border-stone-100 pt-2">
               {list.flatMap((o) =>
                 o.items.map((it, i) => (
-                  <p key={`${o.id}-${i}`} className="flex justify-between font-sans text-sm">
+                  <p key={`${o.id}-${i}`} className="flex justify-between gap-3 font-sans text-sm text-stone-800">
                     <span>
                       {it.qty}x {it.dish_name}
                     </span>
-                    <span className="font-mono">${(it.qty * it.unit_price).toLocaleString("es-CL")}</span>
+                    <span className="font-mono font-semibold tabular-nums">${(it.qty * it.unit_price).toLocaleString("es-CL")}</span>
                   </p>
                 ))
               )}
             </div>
-            <p className="mt-2 flex justify-between font-sans text-sm text-stone-600">
+            <p className="mt-2 flex justify-between font-sans text-sm font-medium text-stone-700">
               <span>Subtotal</span>
-              <span className="font-mono">${subtotal.toLocaleString("es-CL")}</span>
+              <span className="font-mono font-semibold tabular-nums">${subtotal.toLocaleString("es-CL")}</span>
             </p>
-            <p className="flex justify-between font-sans text-sm text-stone-600">
+            <p className="flex justify-between font-sans text-sm font-medium text-stone-700">
               <span>Propina 10%</span>
-              <span className="font-mono">${tip.toLocaleString("es-CL")}</span>
+              <span className="font-mono font-semibold tabular-nums">${tip.toLocaleString("es-CL")}</span>
             </p>
-            <p className="flex justify-between font-sans text-base font-bold">
+            <p className="mt-1 flex justify-between border-t border-stone-100 pt-2 font-sans text-base font-bold text-stone-900">
               <span>Total</span>
-              <span className="font-mono text-[#2E7D32]">${total.toLocaleString("es-CL")}</span>
+              <span className="font-mono tabular-nums text-[#2E7D32]">${total.toLocaleString("es-CL")}</span>
             </p>
-            <Button variant="secondary" onClick={() => closeTable(table)} className="mt-3 w-full">
+            <Button variant="secondary" onClick={() => closeTable(table)} size="lg" className="mt-4 w-full text-base">
               Registrar Pago & Liberar Mesa
             </Button>
           </div>
         );
       })}
-      {byTable.length === 0 ? <p className="font-sans text-stone-500">Sin consumo activo.</p> : null}
+      {byTable.length === 0 ? <p className="rounded-xl border border-stone-200 bg-white p-4 font-sans text-sm text-stone-600 shadow-sm">Sin consumo activo.</p> : null}
+      </div>
     </div>
   );
 }

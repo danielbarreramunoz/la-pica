@@ -57,38 +57,48 @@ export default function KitchenPage() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-900 px-4 py-6">
-      <h1 className="font-sans text-3xl font-bold text-white">Cocina · KDS</h1>
-      <p className="font-mono text-sm text-stone-300">{active.length} órdenes activas</p>
-      <div className="mt-4 grid gap-4 md:grid-cols-3">
+    <div className="min-h-screen bg-stone-950 px-4 py-6 font-sans">
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <p className="font-mono text-xs font-semibold uppercase tracking-widest text-stone-400">
+            Panel operativo · Tiempo real
+          </p>
+          <h1 className="mt-1 font-sans text-3xl font-bold tracking-tight text-white">Cocina · KDS</h1>
+        </div>
+        <p className="rounded-full border border-stone-700 bg-stone-900 px-3 py-1.5 font-mono text-sm font-semibold tabular-nums text-stone-200">
+          {active.length} órdenes activas
+        </p>
+      </div>
+      <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {active.map((o) => (
-          <div key={o.id} className="rounded-xl bg-white p-4 shadow-lg">
-            <div className="flex items-center justify-between">
-              <p className="font-mono text-2xl font-bold">M{o.table_number}</p>
+          <div key={o.id} className="rounded-xl border border-stone-200 bg-white p-4 shadow-md">
+            <div className="flex items-center justify-between gap-2">
+              <p className="font-mono text-2xl font-bold tabular-nums text-stone-900">M{o.table_number}</p>
               <Badge status={o.status} />
             </div>
-            <p className="font-mono text-sm text-stone-600">⏱ {elapsed(o.created_at, now)}</p>
-            <div className="mt-2 space-y-1">
+            <p className="mt-1 font-mono text-sm font-medium tabular-nums text-stone-600">⏱ {elapsed(o.created_at, now)}</p>
+            <div className="mt-2 space-y-1 border-t border-stone-100 pt-2">
               {o.items.map((it, i) => (
-                <p key={i} className="font-sans text-base font-medium">
-                  <span className="font-mono font-bold">{it.qty}x </span>
+                <p key={i} className="font-sans text-base font-medium text-stone-900">
+                  <span className="font-mono font-bold tabular-nums">{it.qty}x </span>
                   {it.dish_name}
-                  {it.notes ? <span className="text-stone-500"> · {it.notes}</span> : null}
+                  {it.notes ? <span className="text-stone-600"> · {it.notes}</span> : null}
                 </p>
               ))}
-              {o.notes ? <p className="font-sans text-sm text-amber-700">Nota: {o.notes}</p> : null}
+              {o.notes ? <p className="rounded-lg bg-amber-50 px-2 py-1 font-sans text-sm font-medium text-amber-800">Nota: {o.notes}</p> : null}
             </div>
             <Button
               variant={o.status === "READY" ? "secondary" : "primary"}
               onClick={() => advance(o.id, o.status)}
-              className="mt-4 w-full h-12 text-base"
+              size="lg"
+              className="mt-4 w-full min-h-14 text-base"
             >
               {ACTION_LABEL[o.status] ?? "Avanzar"}
             </Button>
           </div>
         ))}
       </div>
-      {active.length === 0 ? <p className="mt-8 font-sans text-white">Sin órdenes pendientes.</p> : null}
+      {active.length === 0 ? <p className="mt-8 font-sans text-base text-stone-300">Sin órdenes pendientes.</p> : null}
     </div>
   );
 }

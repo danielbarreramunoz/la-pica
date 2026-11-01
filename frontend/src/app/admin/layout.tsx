@@ -1,24 +1,31 @@
 import Link from "next/link";
+import { Logo } from "@/components/ui/logo";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-stone-50">
-      <header className="border-b border-stone-200 bg-white">
+    <div className="min-h-screen bg-stone-50 font-sans text-stone-900">
+      <header className="sticky top-0 z-10 border-b border-stone-200 bg-white/95 shadow-sm backdrop-blur">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-2">
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#E65100] text-white">
-              <span className="h-3 w-3 rounded-full bg-[#2E7D32]" />
-            </span>
-            <span className="font-sans text-lg font-bold">La Picá · Admin</span>
-          </div>
-          <nav className="flex gap-2 font-sans text-sm">
-            <Link className="rounded-lg px-3 py-2 hover:bg-stone-100" href="/admin">
+          <Link href="/admin" className="rounded-xl focus-visible:outline-none" aria-label="La Picá Admin">
+            <Logo size={38} priority />
+          </Link>
+          <nav className="flex gap-1 font-sans text-sm font-medium">
+            <Link
+              className="rounded-xl px-3 py-2.5 text-stone-700 transition-colors hover:bg-stone-100 hover:text-stone-900"
+              href="/admin"
+            >
               Dashboard
             </Link>
-            <Link className="rounded-lg px-3 py-2 hover:bg-stone-100" href="/admin/dishes">
+            <Link
+              className="rounded-xl px-3 py-2.5 text-stone-700 transition-colors hover:bg-stone-100 hover:text-stone-900"
+              href="/admin/dishes"
+            >
               Platos
             </Link>
-            <Link className="rounded-lg px-3 py-2 hover:bg-stone-100" href="/admin/menu-builder">
+            <Link
+              className="rounded-xl px-3 py-2.5 text-stone-700 transition-colors hover:bg-stone-100 hover:text-stone-900"
+              href="/admin/menu-builder"
+            >
               Menú del día
             </Link>
           </nav>

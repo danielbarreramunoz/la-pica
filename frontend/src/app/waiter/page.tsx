@@ -59,8 +59,14 @@ export default function WaiterPage() {
   }
 
   return (
+    <div className="min-h-screen bg-stone-50 font-sans text-stone-900">
     <div className="mx-auto max-w-5xl space-y-5 px-4 py-6">
-      <h1 className="font-sans text-2xl font-bold">Mesero · Mesas</h1>
+      <div className="border-b border-stone-200 pb-4">
+        <p className="font-mono text-xs font-semibold uppercase tracking-widest text-[#E65100]">
+          Panel operativo · Servicio
+        </p>
+        <h1 className="mt-1 font-sans text-3xl font-bold tracking-tight">Mesero · Mesas</h1>
+      </div>
       <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
         {TABLES.map((t) => {
           const busy = occupied.has(t);
@@ -73,10 +79,10 @@ export default function WaiterPage() {
                 setCart({});
                 setNotes("");
               }}
-              className="h-20 flex-col"
+              className="min-h-20 flex-col gap-1 py-3 shadow-sm hover:shadow-md"
             >
-              <span className="font-mono text-xl font-bold">M{t}</span>
-              <span className="font-sans text-xs">{busy ? "Ocupada" : "Libre"}</span>
+              <span className="font-mono text-xl font-bold tabular-nums">M{t}</span>
+              <span className="font-sans text-xs font-medium opacity-90">{busy ? "Ocupada" : "Libre"}</span>
             </Button>
           );
         })}
@@ -85,34 +91,35 @@ export default function WaiterPage() {
       <Modal open={table !== null} onClose={() => setTable(null)} title={table ? `Mesa ${table} · Menú de hoy` : "Menú"}>
         <div className="space-y-2">
           {menuToday.map((d) => (
-            <div key={d.id} className="flex items-center justify-between rounded-lg border border-stone-200 px-3 py-2">
+            <div key={d.id} className="flex items-center justify-between gap-3 rounded-xl border border-stone-200 bg-white px-3 py-2.5 shadow-sm">
               <div>
-                <p className="font-sans text-sm font-semibold">{d.name}</p>
-                <p className="font-mono text-sm text-stone-600">${d.base_price.toLocaleString("es-CL")}</p>
+                <p className="font-sans text-sm font-semibold text-stone-900">{d.name}</p>
+                <p className="font-mono text-sm font-semibold tabular-nums text-stone-700">${d.base_price.toLocaleString("es-CL")}</p>
               </div>
               <div className="flex items-center gap-2">
-                <Button size="sm" variant="ghost" onClick={() => changeQty(d.id, -1)}>
+                <Button size="sm" variant="ghost" onClick={() => changeQty(d.id, -1)} className="min-h-10 min-w-10">
                   −
                 </Button>
-                <span className="w-6 text-center font-mono text-sm font-bold">{cart[d.id] ?? 0}</span>
-                <Button size="sm" variant="ghost" onClick={() => changeQty(d.id, 1)}>
+                <span className="w-6 text-center font-mono text-sm font-bold tabular-nums text-stone-900">{cart[d.id] ?? 0}</span>
+                <Button size="sm" variant="ghost" onClick={() => changeQty(d.id, 1)} className="min-h-10 min-w-10">
                   +
                 </Button>
               </div>
             </div>
           ))}
           <Input placeholder="Observaciones: sin sal, poca papa…" value={notes} onChange={(e) => setNotes(e.target.value)} />
-          <Button onClick={handleSend} className="w-full bg-[#E65100]">
+          <Button onClick={handleSend} size="lg" className="w-full text-base">
             Enviar a Cocina
           </Button>
           {orders.filter((o) => o.table_number === table && o.status !== "PAID").length > 0 ? (
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2 rounded-xl bg-stone-50 px-3 py-2">
               <Badge status="PENDING" />
-              <span className="font-sans text-xs text-stone-500">Mesa con comanda activa</span>
+              <span className="font-sans text-xs font-medium text-stone-700">Mesa con comanda activa</span>
             </div>
           ) : null}
         </div>
       </Modal>
+    </div>
     </div>
   );
 }

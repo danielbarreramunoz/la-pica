@@ -100,12 +100,12 @@ export default function PublicSearchPage() {
       <div className="grid gap-4 sm:grid-cols-2">
         {list.map((r) => (
           <div key={r.id} className="overflow-hidden rounded-xl border border-stone-200 bg-white">
-            <div className="flex h-28 items-center justify-center bg-stone-100 font-sans text-sm text-stone-400">
+            <div className="flex h-28 items-center justify-center bg-stone-100 font-sans text-sm font-medium text-stone-600">
               Foto portada
             </div>
             <div className="p-4">
-              <p className="font-sans text-base font-bold">{r.name}</p>
-              <p className="font-mono text-xs text-stone-500">{fmtDist(r.distance_m)} · {r.address}</p>
+              <p className="font-sans text-base font-bold text-stone-900">{r.name}</p>
+              <p className="font-mono text-xs font-medium tabular-nums text-stone-700">{fmtDist(r.distance_m)} · {r.address}</p>
               {r.featured ? (
                 <p className="mt-2 font-sans text-sm">
                   Destacado: {r.featured.name}{" "}
