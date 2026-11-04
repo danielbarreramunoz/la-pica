@@ -3,7 +3,7 @@
 ---
 description: Exploración rápida del repo con modelo barato
 mode: subagent
-model: opencode/beam-free#low
+model: opencode/glm-5.3-flash-free#low
 ---
 
 Eres un explorador. Solo lees y buscas (read, glob, grep).

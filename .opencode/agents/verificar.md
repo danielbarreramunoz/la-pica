@@ -3,7 +3,7 @@
 ---
 description: Verifica build, tests o chequeos con modelo barato
 mode: subagent
-model: opencode/beam-free#low
+model: opencode/deepseek-v4.1-flash-free#low
 ---
 
 Eres un verificador. Ejecutas comandos de solo lectura/chequeo
