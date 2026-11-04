@@ -3,7 +3,9 @@
   "instructions": [
     "./AGENTS.md",
     "./frontend/AGENTS.md",
-    "./.harness/design-system.md",
-    "./.harness/domain-rules.md"
-  ]
+    "./docs/specs/design-system.md",
+    "./docs/specs/domain-rules.md",
+    "./.harness/AGENTS.md"
+  ],
+  "plugins": ["./.harness/.opencode/plugins/harness"]
 }
