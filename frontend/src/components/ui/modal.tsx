@@ -31,10 +31,10 @@ export function Modal({
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl"
+        className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl dark:bg-stone-800"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="font-sans text-lg font-semibold text-stone-900">{title}</h2>
+        <h2 className="font-sans text-lg font-semibold text-stone-900 dark:text-stone-100">{title}</h2>
         <div className="mt-4">{children}</div>
         <div className="mt-6 flex justify-end">
           <Button variant="ghost" onClick={onClose}>

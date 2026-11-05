@@ -1,14 +1,19 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
-  /* Marca La Picá — tokens corporativos */
+  /* Marca La Picá — tokens corporativos (light + dark) */
   --color-pica-50: #fff3ec;
   --color-pica-100: #ffe4d3;
+  --color-pica-300: #ff8a3d;
+  --color-pica-400: #ff6a1a;
   --color-pica-500: #e65100;
   --color-pica-600: #c74800;
   --color-pica-700: #bf4300;
-  --color-hoja-50: #edf5ee;
   --color-hoja-100: #d7e9d9;
+  --color-hoja-300: #7cc47f;
+  --color-hoja-50: #edf5ee;
   --color-hoja-500: #2e7d32;
   --color-hoja-600: #276a2b;
   --color-hoja-700: #245f27;
@@ -18,8 +23,15 @@
 }
 
 :root {
-  --background: #fafaf9; /* stone-50 cálido consistente */
+  --background: #fafaf9; /* stone-50 */
   --foreground: #1c1917; /* stone-900 */
+  color-scheme: light;
+}
+
+.dark {
+  --background: #1c1917; /* stone-900 */
+  --foreground: #f5f5f4; /* stone-100 */
+  color-scheme: dark;
 }
 
 html {
@@ -36,6 +48,72 @@ body {
 ::selection {
   background: #e65100;
   color: #fff;
+}
+
+/* Tiles OSM en modo oscuro: mismo raster, invertido por CSS */
+.dark .leaflet-tile-pane {
+  filter: invert(100%) hue-rotate(180deg) brightness(0.92) contrast(0.92);
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes sheet-down {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.animate-sheet {
+  animation: sheet-up 0.25s ease-out;
+}
+
+.animate-sheet-out {
+  animation: sheet-down 0.2s ease-in forwards;
+}
+
+.animate-fade {
+  animation: fade-in 0.2s ease-out;
+}
+
+.animate-fade-out {
+  animation: fade-out 0.2s ease-in forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-sheet,
+  .animate-sheet-out,
+  .animate-fade,
+  .animate-fade-out {
+    animation: none;
+  }
 }
 
 /* Foco visible accesible global */

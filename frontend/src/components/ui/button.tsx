@@ -9,7 +9,7 @@ const variants: Record<Variant, string> = {
   secondary:
     "bg-[#2E7D32] text-white shadow-sm hover:bg-[#245f27] hover:shadow-md active:scale-[0.98] focus-visible:ring-[#2E7D32]",
   ghost:
-    "bg-transparent text-stone-800 hover:bg-stone-100 active:scale-[0.98] focus-visible:ring-stone-400",
+    "bg-transparent text-stone-800 hover:bg-stone-100 active:scale-[0.98] focus-visible:ring-stone-400 dark:text-stone-200 dark:hover:bg-stone-800 dark:focus-visible:ring-stone-500",
 };
 
 const sizes: Record<Size, string> = {

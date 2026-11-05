@@ -2,9 +2,20 @@
 
 ## 1. Paleta
 - Primary Naranja Picá: `#E65100` (CTA, acciones principales, logo plato).
+  Tokens: `pica-50 #FFF3EC`, `pica-100 #FFE4D3`, `pica-300 #FF8A3D`, `pica-400 #FF6A1A`, `pica-500 #E65100`, `pica-600 #C74800`, `pica-700 #BF4300`.
+  En dark se mantiene `pica-500` (contrasta bien sobre fondo oscuro).
 - Secondary Verde Hoja: `#2E7D32` (confirmaciones, cocina lista, éxito).
-- Fondos Neutros: `bg-stone-50 / stone-100` claro, `stone-900` oscuro, texto `stone-800 / stone-100`.
+  Tokens: `hoja-50 #EDF5EE`, `hoja-100 #D7E9D9`, `hoja-300 #7CC47F`, `hoja-500 #2E7D32`, `hoja-600 #276A2B`, `hoja-700 #245F27`.
+  En dark usar `hoja-300 #7CC47F` para texto sobre fondo oscuro (el `hoja-500` no contrasta).
+- Superficies: light `bg-stone-50` fondo / `bg-white` tarjetas / `text-stone-900` / `border-stone-200`.
+  Dark `dark:bg-stone-900` fondo / `dark:bg-stone-800` tarjetas / `dark:text-stone-100` / `dark:border-stone-700`.
+  Texto secundario: `text-stone-600` → `dark:text-stone-400`; `text-stone-700/800` → `dark:text-stone-300/200`.
 - Estados comanda: PENDING ámbar, IN_PREPARATION azul, READY verde, SERVED violeta, PAID gris.
+  Cada `Badge` lleva variante dark (`-950` fondo / `-300` texto / `-800` borde), READY usa `hoja-300`.
+- Modo oscuro: clase `.dark` en `<html>` (Tailwind v4 `@custom-variant dark`), `color-scheme` light/dark,
+  `useThemeStore` (persist `lapica-theme`) + `<ThemeToggle />` global fijo arriba-derecha (`fixed right-4 top-4 z-50`,
+  `Button` ghost circular con icono luna/sol) + script pre-pintado en `layout.tsx`.
+  Cocina KDS responde al tema igual que el resto (no forzar solo-oscuro).
 
 ## 2. Tipografía
 - Prosa: Geist Sans (`font-sans`).
