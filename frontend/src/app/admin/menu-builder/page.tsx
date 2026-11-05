@@ -57,7 +57,7 @@ export default function MenuBuilderPage() {
 
   return (
     <div className="space-y-5">
-      <div className="border-b border-stone-200 pb-4">
+      <div className="border-b border-stone-200 pb-4 dark:border-stone-700">
         <p className="font-mono text-xs font-semibold uppercase tracking-widest text-[#E65100]">
           Menú del día · Programación
         </p>
@@ -66,7 +66,7 @@ export default function MenuBuilderPage() {
 
       <div className="flex flex-wrap items-end gap-3">
         <div className="w-52">
-          <p className="mb-1 font-sans text-xs text-stone-500">Fecha</p>
+          <p className="mb-1 font-sans text-xs text-stone-500 dark:text-stone-400">Fecha</p>
           <Input
             type="date"
             value={selectedDate}
@@ -84,7 +84,7 @@ export default function MenuBuilderPage() {
           return (
             <div
               key={d.id}
-              className="flex items-center justify-between rounded-xl border border-stone-200 bg-white px-4 py-3"
+              className="flex items-center justify-between rounded-xl border border-stone-200 bg-white px-4 py-3 dark:border-stone-700 dark:bg-stone-800"
             >
               <div>
                 <p className="font-sans text-sm font-semibold">{d.name}</p>
@@ -98,8 +98,8 @@ export default function MenuBuilderPage() {
         })}
       </div>
 
-      <div className="rounded-xl border border-[#2E7D32]/30 bg-white p-4">
-        <p className="font-sans text-sm font-semibold text-[#2E7D32]">Plato del día / Ejecutivo</p>
+      <div className="rounded-xl border border-[#2E7D32]/30 bg-white p-4 dark:border-[#7cc47f]/30 dark:bg-stone-800">
+        <p className="font-sans text-sm font-semibold text-[#2E7D32] dark:text-[#7cc47f]">Plato del día / Ejecutivo</p>
         <div className="mt-3 flex flex-wrap gap-3">
           <div className="min-w-52 flex-1">
             <Select value={featuredDishId ?? ""} onChange={(e) => setFeatured(e.target.value || null)}>

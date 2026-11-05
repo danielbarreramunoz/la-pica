@@ -25,47 +25,47 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-6">
-      <div className="border-b border-stone-200 pb-5">
+      <div className="border-b border-stone-200 pb-5 dark:border-stone-700">
         <p className="font-mono text-xs font-semibold uppercase tracking-widest text-[#E65100]">
           Panel operativo · La Picá
         </p>
-        <h1 className="mt-1 font-sans text-3xl font-bold tracking-tight text-stone-900">
+        <h1 className="mt-1 font-sans text-3xl font-bold tracking-tight text-stone-900 dark:text-stone-100">
           Dashboard general
         </h1>
-        <p className="mt-1 font-sans text-sm text-stone-600">
+        <p className="mt-1 font-sans text-sm text-stone-600 dark:text-stone-400">
           Resumen del menú del día, catálogo y estado de cocina en tiempo real.
         </p>
       </div>
-      {loading ? <p className="font-sans text-sm text-stone-600">Cargando…</p> : null}
+      {loading ? <p className="font-sans text-sm text-stone-600 dark:text-stone-400">Cargando…</p> : null}
       <div className="grid gap-4 sm:grid-cols-3">
-        <div className="overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm">
+        <div className="overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm dark:border-stone-700 dark:bg-stone-800">
           <div className="h-1.5 bg-[#E65100]" aria-hidden="true" />
           <div className="p-5">
-            <p className="font-sans text-sm font-medium text-stone-600">Menú activo hoy</p>
+            <p className="font-sans text-sm font-medium text-stone-600 dark:text-stone-400">Menú activo hoy</p>
             <p className="mt-1 font-mono text-4xl font-bold tabular-nums text-[#E65100]">
               {selectedDishIds.length}
             </p>
-            <p className="mt-1 font-sans text-xs text-stone-600">platos programados</p>
+            <p className="mt-1 font-sans text-xs text-stone-600 dark:text-stone-400">platos programados</p>
           </div>
         </div>
-        <div className="overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm">
+        <div className="overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm dark:border-stone-700 dark:bg-stone-800">
           <div className="h-1.5 bg-[#2E7D32]" aria-hidden="true" />
           <div className="p-5">
-            <p className="font-sans text-sm font-medium text-stone-600">Platos disponibles</p>
-            <p className="mt-1 font-mono text-4xl font-bold tabular-nums text-[#2E7D32]">
+            <p className="font-sans text-sm font-medium text-stone-600 dark:text-stone-400">Platos disponibles</p>
+            <p className="mt-1 font-mono text-4xl font-bold tabular-nums text-[#2E7D32] dark:text-[#7cc47f]">
               {disponibles}
             </p>
-            <p className="mt-1 font-sans text-xs text-stone-600">de {dishes.length} en catálogo</p>
+            <p className="mt-1 font-sans text-xs text-stone-600 dark:text-stone-400">de {dishes.length} en catálogo</p>
           </div>
         </div>
-        <div className="rounded-xl border border-stone-200 bg-white p-5 shadow-sm">
-          <p className="font-sans text-sm font-medium text-stone-600">Estado cocina</p>
+        <div className="rounded-xl border border-stone-200 bg-white p-5 shadow-sm dark:border-stone-700 dark:bg-stone-800">
+          <p className="font-sans text-sm font-medium text-stone-600 dark:text-stone-400">Estado cocina</p>
           <div className="mt-3 flex flex-wrap gap-2">
             <Badge status="PENDING" />
             <Badge status="IN_PREPARATION" />
             <Badge status="READY" />
           </div>
-          <p className="mt-2 font-sans text-xs text-stone-600">Comandas en curso (KDS)</p>
+          <p className="mt-2 font-sans text-xs text-stone-600 dark:text-stone-400">Comandas en curso (KDS)</p>
         </div>
       </div>
       <div className="flex flex-wrap gap-3">

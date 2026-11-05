@@ -92,7 +92,7 @@ export default function DishesPage() {
 
   return (
     <div className="space-y-5">
-      <div className="border-b border-stone-200 pb-4">
+      <div className="border-b border-stone-200 pb-4 dark:border-stone-700">
         <p className="font-mono text-xs font-semibold uppercase tracking-widest text-[#E65100]">
           Catálogo · Platos
         </p>
@@ -104,13 +104,13 @@ export default function DishesPage() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {dishes.map((d) => (
-          <div key={d.id} className="rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
-            <div className="flex h-20 items-center justify-center rounded-lg bg-stone-100 font-sans text-sm font-medium text-stone-600">
+          <div key={d.id} className="rounded-xl border border-stone-200 bg-white p-4 shadow-sm dark:border-stone-700 dark:bg-stone-800">
+            <div className="flex h-20 items-center justify-center rounded-lg bg-stone-100 font-sans text-sm font-medium text-stone-600 dark:bg-stone-700 dark:text-stone-400">
               {d.image_url ? "Imagen" : "Sin imagen · placeholder"}
             </div>
-            <p className="mt-3 font-sans text-base font-semibold text-stone-900">{d.name}</p>
-            <p className="font-sans text-sm text-stone-600">{d.description}</p>
-            <p className="mt-1 font-sans text-xs font-medium uppercase tracking-wide text-stone-600">{d.category}</p>
+            <p className="mt-3 font-sans text-base font-semibold text-stone-900 dark:text-stone-100">{d.name}</p>
+            <p className="font-sans text-sm text-stone-600 dark:text-stone-400">{d.description}</p>
+            <p className="mt-1 font-sans text-xs font-medium uppercase tracking-wide text-stone-600 dark:text-stone-400">{d.category}</p>
             <p className="font-mono text-lg font-bold tabular-nums text-[#E65100]">
               ${d.base_price.toLocaleString("es-CL")}
             </p>

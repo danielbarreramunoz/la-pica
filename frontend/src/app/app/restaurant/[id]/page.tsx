@@ -64,20 +64,20 @@ function RestaurantInner() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-5 px-4 py-6 pb-28">
-      <div className="rounded-xl border border-stone-200 bg-white p-5">
+      <div className="rounded-xl border border-stone-200 bg-white p-5 dark:border-stone-700 dark:bg-stone-800">
         <p className="font-sans text-xl font-bold">{data.name}</p>
-        <p className="font-sans text-sm text-stone-500">{data.address}</p>
-        <p className="font-sans text-sm text-stone-500">Colación: {data.lunch_hours}</p>
+        <p className="font-sans text-sm text-stone-500 dark:text-stone-400">{data.address}</p>
+        <p className="font-sans text-sm text-stone-500 dark:text-stone-400">Colación: {data.lunch_hours}</p>
       </div>
 
-      <h2 className="font-sans text-lg font-bold text-[#2E7D32]">Menú del Día de Hoy</h2>
+      <h2 className="font-sans text-lg font-bold text-[#2E7D32] dark:text-[#7cc47f]">Menú del Día de Hoy</h2>
       <div className="space-y-2">
         {data.menu.map((d) => (
-          <div key={d.id} className="flex items-center justify-between rounded-xl border border-stone-200 bg-white p-3">
+          <div key={d.id} className="flex items-center justify-between rounded-xl border border-stone-200 bg-white p-3 dark:border-stone-700 dark:bg-stone-800">
             <div>
               <p className="font-sans text-sm font-semibold">{d.name}</p>
-              <p className="font-sans text-xs text-stone-500">{d.description}</p>
-              <p className="font-mono text-sm font-bold text-[#2E7D32]">${d.base_price.toLocaleString("es-CL")}</p>
+              <p className="font-sans text-xs text-stone-500 dark:text-stone-400">{d.description}</p>
+              <p className="font-mono text-sm font-bold text-[#2E7D32] dark:text-[#7cc47f]">${d.base_price.toLocaleString("es-CL")}</p>
             </div>
             <Button size="sm" onClick={() => openDish(d)}>
               Agregar
@@ -112,7 +112,7 @@ function RestaurantInner() {
       </Modal>
 
       {count > 0 ? (
-        <div className="fixed inset-x-0 bottom-0 border-t border-stone-200 bg-white p-4 shadow-lg">
+        <div className="fixed inset-x-0 bottom-16 border-t border-stone-200 bg-white p-4 shadow-lg dark:border-stone-700 dark:bg-stone-900">
           <div className="mx-auto flex max-w-3xl items-center justify-between">
             <p className="font-sans text-sm">
               {count} ítems · <span className="font-mono font-bold">${total.toLocaleString("es-CL")}</span>

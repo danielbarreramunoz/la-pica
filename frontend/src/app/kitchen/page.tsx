@@ -21,11 +21,10 @@ const ACTION_LABEL: Record<string, string> = {
 
 export default function KitchenPage() {
   const { orders, startRealtime } = useOrderStore();
-  const [now, setNow] = useState(0);
+  const [now, setNow] = useState(() => Date.now());
   const known = useRef<Set<string>>(new Set());
 
   useEffect(() => {
-    setNow(Date.now());
     const stop = startRealtime();
     const t = setInterval(() => setNow(Date.now()), 30000);
     return () => {
@@ -57,35 +56,37 @@ export default function KitchenPage() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-950 px-4 py-6 font-sans">
+    <div className="min-h-screen bg-stone-50 px-4 py-6 font-sans text-stone-900 dark:bg-stone-950 dark:text-stone-100">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="font-mono text-xs font-semibold uppercase tracking-widest text-stone-400">
+          <p className="font-mono text-xs font-semibold uppercase tracking-widest text-stone-500 dark:text-stone-400">
             Panel operativo · Tiempo real
           </p>
-          <h1 className="mt-1 font-sans text-3xl font-bold tracking-tight text-white">Cocina · KDS</h1>
+          <h1 className="mt-1 font-sans text-3xl font-bold tracking-tight text-stone-900 dark:text-white">Cocina · KDS</h1>
         </div>
-        <p className="rounded-full border border-stone-700 bg-stone-900 px-3 py-1.5 font-mono text-sm font-semibold tabular-nums text-stone-200">
+        <div className="flex items-center gap-2">
+        <p className="rounded-full border border-stone-200 bg-white px-3 py-1.5 font-mono text-sm font-semibold tabular-nums text-stone-700 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-200">
           {active.length} órdenes activas
         </p>
+        </div>
       </div>
       <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {active.map((o) => (
-          <div key={o.id} className="rounded-xl border border-stone-200 bg-white p-4 shadow-md">
+          <div key={o.id} className="rounded-xl border border-stone-200 bg-white p-4 shadow-md dark:border-stone-700 dark:bg-stone-900">
             <div className="flex items-center justify-between gap-2">
-              <p className="font-mono text-2xl font-bold tabular-nums text-stone-900">M{o.table_number}</p>
+              <p className="font-mono text-2xl font-bold tabular-nums text-stone-900 dark:text-stone-100">M{o.table_number}</p>
               <Badge status={o.status} />
             </div>
-            <p className="mt-1 font-mono text-sm font-medium tabular-nums text-stone-600">⏱ {elapsed(o.created_at, now)}</p>
-            <div className="mt-2 space-y-1 border-t border-stone-100 pt-2">
+            <p className="mt-1 font-mono text-sm font-medium tabular-nums text-stone-600 dark:text-stone-400">⏱ {elapsed(o.created_at, now)}</p>
+            <div className="mt-2 space-y-1 border-t border-stone-100 pt-2 dark:border-stone-700">
               {o.items.map((it, i) => (
-                <p key={i} className="font-sans text-base font-medium text-stone-900">
+                <p key={i} className="font-sans text-base font-medium text-stone-900 dark:text-stone-100">
                   <span className="font-mono font-bold tabular-nums">{it.qty}x </span>
                   {it.dish_name}
-                  {it.notes ? <span className="text-stone-600"> · {it.notes}</span> : null}
+                  {it.notes ? <span className="text-stone-600 dark:text-stone-400"> · {it.notes}</span> : null}
                 </p>
               ))}
-              {o.notes ? <p className="rounded-lg bg-amber-50 px-2 py-1 font-sans text-sm font-medium text-amber-800">Nota: {o.notes}</p> : null}
+              {o.notes ? <p className="rounded-lg bg-amber-50 px-2 py-1 font-sans text-sm font-medium text-amber-800 dark:bg-amber-950 dark:text-amber-300">Nota: {o.notes}</p> : null}
             </div>
             <Button
               variant={o.status === "READY" ? "secondary" : "primary"}
@@ -98,7 +99,7 @@ export default function KitchenPage() {
           </div>
         ))}
       </div>
-      {active.length === 0 ? <p className="mt-8 font-sans text-base text-stone-300">Sin órdenes pendientes.</p> : null}
+      {active.length === 0 ? <p className="mt-8 font-sans text-base text-stone-500 dark:text-stone-300">Sin órdenes pendientes.</p> : null}
     </div>
   );
 }

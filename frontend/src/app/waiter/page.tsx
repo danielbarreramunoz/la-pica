@@ -59,13 +59,15 @@ export default function WaiterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-50 font-sans text-stone-900">
+    <div className="min-h-screen bg-stone-50 font-sans text-stone-900 dark:bg-stone-900 dark:text-stone-100">
     <div className="mx-auto max-w-5xl space-y-5 px-4 py-6">
-      <div className="border-b border-stone-200 pb-4">
+      <div className="flex items-end justify-between gap-3 border-b border-stone-200 pb-4 dark:border-stone-700">
+        <div>
         <p className="font-mono text-xs font-semibold uppercase tracking-widest text-[#E65100]">
           Panel operativo · Servicio
         </p>
         <h1 className="mt-1 font-sans text-3xl font-bold tracking-tight">Mesero · Mesas</h1>
+        </div>
       </div>
       <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
         {TABLES.map((t) => {
@@ -91,16 +93,16 @@ export default function WaiterPage() {
       <Modal open={table !== null} onClose={() => setTable(null)} title={table ? `Mesa ${table} · Menú de hoy` : "Menú"}>
         <div className="space-y-2">
           {menuToday.map((d) => (
-            <div key={d.id} className="flex items-center justify-between gap-3 rounded-xl border border-stone-200 bg-white px-3 py-2.5 shadow-sm">
+            <div key={d.id} className="flex items-center justify-between gap-3 rounded-xl border border-stone-200 bg-white px-3 py-2.5 shadow-sm dark:border-stone-700 dark:bg-stone-800">
               <div>
-                <p className="font-sans text-sm font-semibold text-stone-900">{d.name}</p>
-                <p className="font-mono text-sm font-semibold tabular-nums text-stone-700">${d.base_price.toLocaleString("es-CL")}</p>
+                <p className="font-sans text-sm font-semibold text-stone-900 dark:text-stone-100">{d.name}</p>
+                <p className="font-mono text-sm font-semibold tabular-nums text-stone-700 dark:text-stone-300">${d.base_price.toLocaleString("es-CL")}</p>
               </div>
               <div className="flex items-center gap-2">
                 <Button size="sm" variant="ghost" onClick={() => changeQty(d.id, -1)} className="min-h-10 min-w-10">
                   −
                 </Button>
-                <span className="w-6 text-center font-mono text-sm font-bold tabular-nums text-stone-900">{cart[d.id] ?? 0}</span>
+                <span className="w-6 text-center font-mono text-sm font-bold tabular-nums text-stone-900 dark:text-stone-100">{cart[d.id] ?? 0}</span>
                 <Button size="sm" variant="ghost" onClick={() => changeQty(d.id, 1)} className="min-h-10 min-w-10">
                   +
                 </Button>
@@ -112,9 +114,9 @@ export default function WaiterPage() {
             Enviar a Cocina
           </Button>
           {orders.filter((o) => o.table_number === table && o.status !== "PAID").length > 0 ? (
-            <div className="flex items-center gap-2 rounded-xl bg-stone-50 px-3 py-2">
+            <div className="flex items-center gap-2 rounded-xl bg-stone-50 px-3 py-2 dark:bg-stone-800">
               <Badge status="PENDING" />
-              <span className="font-sans text-xs font-medium text-stone-700">Mesa con comanda activa</span>
+              <span className="font-sans text-xs font-medium text-stone-700 dark:text-stone-300">Mesa con comanda activa</span>
             </div>
           ) : null}
         </div>

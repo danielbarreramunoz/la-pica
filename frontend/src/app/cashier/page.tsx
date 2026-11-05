@@ -56,16 +56,18 @@ export default function CashierPage() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-50 font-sans text-stone-900">
+    <div className="min-h-screen bg-stone-50 font-sans text-stone-900 dark:bg-stone-900 dark:text-stone-100">
       <div className="mx-auto max-w-5xl space-y-5 px-4 py-6">
-      <div className="border-b border-stone-200 pb-4">
-        <p className="font-mono text-xs font-semibold uppercase tracking-widest text-[#2E7D32]">
+      <div className="flex items-end justify-between gap-3 border-b border-stone-200 pb-4 dark:border-stone-700">
+        <div>
+        <p className="font-mono text-xs font-semibold uppercase tracking-widest text-[#2E7D32] dark:text-[#7cc47f]">
           Panel operativo · Cobro
         </p>
         <h1 className="mt-1 font-sans text-3xl font-bold tracking-tight">Caja · Cierre de mesa</h1>
+        </div>
       </div>
-      <div className="flex items-center gap-3 rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
-        <span className="font-sans text-sm font-medium text-stone-800">Propina 10%</span>
+      <div className="flex items-center gap-3 rounded-xl border border-stone-200 bg-white p-4 shadow-sm dark:border-stone-700 dark:bg-stone-800">
+        <span className="font-sans text-sm font-medium text-stone-800 dark:text-stone-200">Propina 10%</span>
         <Switch checked={tipOn} onChange={setTipOn} label="Propina" />
       </div>
       {byTable.map(([table, list]) => {
@@ -73,19 +75,19 @@ export default function CashierPage() {
         const tip = tipOn ? Math.round(subtotal * 0.1) : 0;
         const total = subtotal + tip;
         return (
-          <div key={table} className="rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
+          <div key={table} className="rounded-xl border border-stone-200 bg-white p-4 shadow-sm dark:border-stone-700 dark:bg-stone-800">
             <div className="flex items-center justify-between gap-2">
-              <p className="font-mono text-xl font-bold tabular-nums text-stone-900">Mesa {table}</p>
+              <p className="font-mono text-xl font-bold tabular-nums text-stone-900 dark:text-stone-100">Mesa {table}</p>
               <div className="flex gap-2">
                 {list.map((o) => (
                   <Badge key={o.id} status={o.status} />
                 ))}
               </div>
             </div>
-            <div className="mt-2 space-y-1 border-t border-stone-100 pt-2">
+            <div className="mt-2 space-y-1 border-t border-stone-100 pt-2 dark:border-stone-700">
               {list.flatMap((o) =>
                 o.items.map((it, i) => (
-                  <p key={`${o.id}-${i}`} className="flex justify-between gap-3 font-sans text-sm text-stone-800">
+                  <p key={`${o.id}-${i}`} className="flex justify-between gap-3 font-sans text-sm text-stone-800 dark:text-stone-200">
                     <span>
                       {it.qty}x {it.dish_name}
                     </span>
@@ -94,17 +96,17 @@ export default function CashierPage() {
                 ))
               )}
             </div>
-            <p className="mt-2 flex justify-between font-sans text-sm font-medium text-stone-700">
+            <p className="mt-2 flex justify-between font-sans text-sm font-medium text-stone-700 dark:text-stone-300">
               <span>Subtotal</span>
               <span className="font-mono font-semibold tabular-nums">${subtotal.toLocaleString("es-CL")}</span>
             </p>
-            <p className="flex justify-between font-sans text-sm font-medium text-stone-700">
+            <p className="flex justify-between font-sans text-sm font-medium text-stone-700 dark:text-stone-300">
               <span>Propina 10%</span>
               <span className="font-mono font-semibold tabular-nums">${tip.toLocaleString("es-CL")}</span>
             </p>
-            <p className="mt-1 flex justify-between border-t border-stone-100 pt-2 font-sans text-base font-bold text-stone-900">
+            <p className="mt-1 flex justify-between border-t border-stone-100 pt-2 font-sans text-base font-bold text-stone-900 dark:border-stone-700 dark:text-stone-100">
               <span>Total</span>
-              <span className="font-mono tabular-nums text-[#2E7D32]">${total.toLocaleString("es-CL")}</span>
+              <span className="font-mono tabular-nums text-[#2E7D32] dark:text-[#7cc47f]">${total.toLocaleString("es-CL")}</span>
             </p>
             <Button variant="secondary" onClick={() => closeTable(table)} size="lg" className="mt-4 w-full text-base">
               Registrar Pago & Liberar Mesa
@@ -112,7 +114,7 @@ export default function CashierPage() {
           </div>
         );
       })}
-      {byTable.length === 0 ? <p className="rounded-xl border border-stone-200 bg-white p-4 font-sans text-sm text-stone-600 shadow-sm">Sin consumo activo.</p> : null}
+      {byTable.length === 0 ? <p className="rounded-xl border border-stone-200 bg-white p-4 font-sans text-sm text-stone-600 shadow-sm dark:border-stone-700 dark:bg-stone-800 dark:text-stone-400">Sin consumo activo.</p> : null}
       </div>
     </div>
   );

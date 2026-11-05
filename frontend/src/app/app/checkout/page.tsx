@@ -41,8 +41,8 @@ export default function CheckoutPage() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-5 px-4 py-6">
-      <h1 className="font-sans text-2xl font-bold">Pre-Pedido Express</h1>
-      <div className="space-y-3 rounded-xl border border-stone-200 bg-white p-4">
+      <h1 className="font-sans text-2xl font-bold dark:text-stone-100">Pre-Pedido Express</h1>
+      <div className="space-y-3 rounded-xl border border-stone-200 bg-white p-4 dark:border-stone-700 dark:bg-stone-800">
         <Input
           placeholder="Nombre del cliente"
           value={customerName}
@@ -63,20 +63,20 @@ export default function CheckoutPage() {
         </Select>
       </div>
 
-      <div className="rounded-xl border border-stone-200 bg-white p-4">
+      <div className="rounded-xl border border-stone-200 bg-white p-4 dark:border-stone-700 dark:bg-stone-800">
         <p className="font-sans text-sm font-bold">Resumen</p>
         {cart.map((c, i) => (
           <p key={i} className="flex justify-between font-sans text-sm">
             <span>
               {c.qty}x {c.dish_name}
-              {c.notes ? <span className="text-stone-500"> · {c.notes}</span> : null}
+              {c.notes ? <span className="text-stone-500 dark:text-stone-400"> · {c.notes}</span> : null}
             </span>
             <span className="font-mono">${(c.qty * c.unit_price).toLocaleString("es-CL")}</span>
           </p>
         ))}
         <p className="mt-2 flex justify-between font-sans font-bold">
           <span>Total</span>
-          <span className="font-mono text-[#2E7D32]">${total.toLocaleString("es-CL")}</span>
+          <span className="font-mono text-[#2E7D32] dark:text-[#7cc47f]">${total.toLocaleString("es-CL")}</span>
         </p>
       </div>
 
