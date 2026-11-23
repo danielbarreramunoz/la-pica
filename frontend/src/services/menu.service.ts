@@ -1,6 +1,6 @@
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
 
-export type DishCategory = "Entrada" | "Fondo" | "Postre" | "Bebestible";
+export type DishCategory = "Entrada" | "Fondo" | "Postre" | "Bebestible" | "Trago";
 
 export interface Dish {
   id: string;
@@ -29,12 +29,14 @@ export interface DailyMenu {
   items: DailyMenuItem[];
 }
 
-// Mock elegante si no hay Supabase (testing local)
+// Catálogo de prueba de una picada de barrio, sin datos de producción.
 const mockDishes: Dish[] = [
   { id: "mock-1", name: "Cazuela de vacuno", description: "Caldo casero con choclo y zapallo", category: "Fondo", base_price: 5500, is_active: true },
   { id: "mock-2", name: "Sopaipillas", description: "Con pebre de la casa", category: "Entrada", base_price: 2500, is_active: true },
   { id: "mock-3", name: "Mote con huesillo", description: "Clásico chileno bien helado", category: "Bebestible", base_price: 2000, is_active: true },
   { id: "mock-4", name: "Leche asada", description: "Postre casero con caramelo", category: "Postre", base_price: 2800, is_active: false },
+  { id: "mock-5", name: "Cerveza en lata", description: "Lata helada", category: "Trago", base_price: 2500, is_active: true },
+  { id: "mock-6", name: "Bebida cola", description: "Lata individual", category: "Bebestible", base_price: 1800, is_active: true },
 ];
 
 const mockMenus: Record<string, DailyMenu> = {};

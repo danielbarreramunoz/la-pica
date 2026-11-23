@@ -3,7 +3,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  /* Marca La Picá — tokens corporativos (light + dark) */
+  /* Marca La Picá — naranjo de cocina + verde hoja + papel de picada */
   --color-pica-50: #fff3ec;
   --color-pica-100: #ffe4d3;
   --color-pica-300: #ff8a3d;
@@ -17,20 +17,27 @@
   --color-hoja-500: #2e7d32;
   --color-hoja-600: #276a2b;
   --color-hoja-700: #245f27;
+  --color-picada-cream: #fffaf0;
+  --color-picada-paper: #f6efe1;
+  --color-picada-line: #e7d5bb;
+  --color-picada-ink: #26170f;
+  --color-picada-brick: #7a2e16;
+  --color-picada-mustard: #f3b62c;
 
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-display: var(--font-archivo-black), "Arial Black", ui-sans-serif, sans-serif;
 }
 
 :root {
-  --background: #fafaf9; /* stone-50 */
-  --foreground: #1c1917; /* stone-900 */
+  --background: #f6efe1;
+  --foreground: #26170f;
   color-scheme: light;
 }
 
 .dark {
-  --background: #1c1917; /* stone-900 */
-  --foreground: #f5f5f4; /* stone-100 */
+  --background: #17110e;
+  --foreground: #f5eee4;
   color-scheme: dark;
 }
 
@@ -39,15 +46,123 @@ html {
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
-::selection {
-  background: #e65100;
-  color: #fff;
+h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.035em;
+}
+
+/* Fondo de papel con grano sutil, propio de una picada de barrio. */
+@layer components {
+.picada-paper {
+  background-color: #f6efe1;
+  background-image:
+    radial-gradient(circle at 18% 12%, rgba(230, 81, 0, 0.08), transparent 26rem),
+    radial-gradient(circle at 82% 4%, rgba(46, 125, 50, 0.07), transparent 22rem),
+    radial-gradient(rgba(124, 69, 35, 0.12) 0.65px, transparent 0.65px);
+  background-size: auto, auto, 17px 17px;
+}
+
+.dark .picada-paper {
+  background-color: #17110e;
+  background-image:
+    radial-gradient(circle at 18% 12%, rgba(230, 81, 0, 0.06), transparent 26rem),
+    radial-gradient(circle at 82% 4%, rgba(46, 125, 50, 0.05), transparent 22rem),
+    radial-gradient(rgba(255, 210, 160, 0.07) 0.65px, transparent 0.65px);
+  background-size: auto, auto, 17px 17px;
+}
+
+.picada-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid rgba(255, 239, 214, 0.16);
+  background:
+    linear-gradient(135deg, #5b2113 0%, #7a2e16 52%, #9a3e1a 100%);
+  color: #fff8eb;
+  box-shadow: 0 18px 36px -26px rgba(65, 25, 12, 0.75);
+}
+
+.picada-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 244, 224, 0.055) 0,
+    rgba(255, 244, 224, 0.055) 1px,
+    transparent 1px,
+    transparent 9px
+  );
+  pointer-events: none;
+}
+
+.picada-card {
+  border: 1px solid var(--color-picada-line);
+  border-radius: 1.25rem;
+  background: #fffdf7;
+  box-shadow:
+    0 1px 0 rgba(104, 68, 42, 0.08),
+    0 14px 30px -26px rgba(63, 36, 20, 0.55);
+}
+
+.dark .picada-card {
+  border-color: #3a2b22;
+  background: #201814;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4), 0 18px 34px -26px rgba(0, 0, 0, 0.8);
+}
+
+.picada-ticket {
+  border: 1px dashed #d8c2a5;
+  border-radius: 1rem;
+  background: #fffdf7;
+  box-shadow: 0 8px 20px -18px rgba(63, 36, 20, 0.55);
+}
+
+.dark .picada-ticket {
+  border-color: #4b392d;
+  background: #211914;
+}
+
+.picada-eyebrow {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #e65100;
+}
+
+.dark .picada-eyebrow {
+  color: #ffb27a;
+}
+
+.picada-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px solid rgba(255, 240, 219, 0.24);
+  border-radius: 999px;
+  background: rgba(255, 247, 234, 0.12);
+  padding: 0.35rem 0.7rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #ffe9ce;
+}
+
+.picada-grid-lines {
+  background-image:
+    linear-gradient(rgba(230, 81, 0, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(230, 81, 0, 0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
 }
 
 /* Tiles OSM en modo oscuro: mismo raster, invertido por CSS */

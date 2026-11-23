@@ -6,100 +6,152 @@ import { Badge } from "@/components/ui/badge";
 import { useOrderStore } from "@/stores/useOrderStore";
 import { NEXT_STATUS, orderService } from "@/services/order.service";
 import { showToast } from "@/components/ui/toast";
+import { PageHero } from "@/components/layout/page-hero";
 
-function elapsed(created_at: string, now: number): string {
-  if (!now) return "…";
-  const mins = Math.max(0, Math.floor((now - new Date(created_at).getTime()) / 60000));
-  return `${mins} min`;
+function minutesSince(createdAt: string, now: number): number {
+  if (!now) return 0;
+  return Math.max(0, Math.floor((now - new Date(createdAt).getTime()) / 60000));
 }
 
 const ACTION_LABEL: Record<string, string> = {
-  PENDING: "Tomar · Cocinar",
+  PENDING: "Tomar y cocinar",
   IN_PREPARATION: "Marcar lista",
-  READY: "Entregar",
+  READY: "Entregar a mesa",
+};
+
+const statusStripe: Record<string, string> = {
+  PENDING: "bg-[#f3b62c]",
+  IN_PREPARATION: "bg-sky-500",
+  READY: "bg-[#2E7D32]",
 };
 
 export default function KitchenPage() {
   const { orders, startRealtime } = useOrderStore();
   const [now, setNow] = useState(() => Date.now());
   const known = useRef<Set<string>>(new Set());
+  const didLoad = useRef(false);
 
   useEffect(() => {
     const stop = startRealtime();
-    const t = setInterval(() => setNow(Date.now()), 30000);
+    const timer = setInterval(() => setNow(Date.now()), 30000);
     return () => {
       stop();
-      clearInterval(t);
+      clearInterval(timer);
     };
   }, [startRealtime]);
 
   useEffect(() => {
-    orders.forEach((o) => {
-      if (!known.current.has(o.id)) {
-        known.current.add(o.id);
-        if (o.status === "PENDING") showToast.orderAlert(`Nueva comanda · Mesa ${o.table_number}`);
+    if (!didLoad.current && orders.length) {
+      orders.forEach((order) => known.current.add(order.id));
+      didLoad.current = true;
+      return;
+    }
+    orders.forEach((order) => {
+      if (!known.current.has(order.id)) {
+        known.current.add(order.id);
+        if (order.status === "PENDING") {
+          showToast.orderAlert(order.table_number > 0
+            ? `Nueva comanda · Mesa ${order.table_number}, puesto ${order.seat_number ?? 1}`
+            : `Nuevo pre-pedido · ${order.customer_name ?? "Cliente"}`);
+        }
       }
     });
   }, [orders]);
 
-  const active = orders.filter((o) => ["PENDING", "IN_PREPARATION", "READY"].includes(o.status));
+  const active = orders.filter((order) => ["PENDING", "IN_PREPARATION", "READY"].includes(order.status));
+  const counts = {
+    PENDING: active.filter((order) => order.status === "PENDING").length,
+    IN_PREPARATION: active.filter((order) => order.status === "IN_PREPARATION").length,
+    READY: active.filter((order) => order.status === "READY").length,
+  };
 
   async function advance(id: string, status: string) {
     const next = NEXT_STATUS[status as keyof typeof NEXT_STATUS];
     if (!next) return;
     try {
       await orderService.updateOrderStatus(id, next);
-      showToast.success(`Mesa actualizada → ${next}`);
-    } catch (e) {
-      showToast.error(e instanceof Error ? e.message : "Error");
+      showToast.success(`Comanda actualizada: ${next.replaceAll("_", " ").toLowerCase()}`);
+    } catch (error) {
+      showToast.error(error instanceof Error ? error.message : "No se pudo actualizar la comanda");
     }
   }
 
   return (
-    <div className="min-h-screen bg-stone-50 px-4 py-6 font-sans text-stone-900 dark:bg-stone-950 dark:text-stone-100">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <p className="font-mono text-xs font-semibold uppercase tracking-widest text-stone-500 dark:text-stone-400">
-            Panel operativo · Tiempo real
-          </p>
-          <h1 className="mt-1 font-sans text-3xl font-bold tracking-tight text-stone-900 dark:text-white">Cocina · KDS</h1>
-        </div>
-        <div className="flex items-center gap-2">
-        <p className="rounded-full border border-stone-200 bg-white px-3 py-1.5 font-mono text-sm font-semibold tabular-nums text-stone-700 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-200">
-          {active.length} órdenes activas
-        </p>
-        </div>
+    <div className="space-y-5">
+      <PageHero
+        eyebrow="Cocina · Tiempo real"
+        title="Comandas en cocina"
+        description="Las comandas entran solas. Toma la orden, marca cuando esté lista y entrégala a la mesa."
+      >
+        <span className="picada-chip">{counts.PENDING} por tomar</span>
+        <span className="picada-chip">{counts.IN_PREPARATION} en cocina</span>
+        <span className="picada-chip">{counts.READY} listas</span>
+      </PageHero>
+
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {active.map((order) => {
+          const minutes = minutesSince(order.created_at, now);
+          const late = minutes >= 20 && order.status !== "READY";
+          return (
+            <article key={order.id} className="picada-card overflow-hidden">
+              <div className={`h-1.5 ${statusStripe[order.status] ?? "bg-stone-300"}`} aria-hidden="true" />
+              <div className="p-4">
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">
+                      {order.table_number > 0 ? "Mesa" : "Pre-pedido"}
+                    </p>
+                    <p className="font-display text-3xl tracking-tight text-stone-900 dark:text-stone-50">
+                      {order.table_number > 0
+                        ? `${order.table_number} · P${order.seat_number ?? 1}`
+                        : "Express"}
+                    </p>
+                  </div>
+                  <Badge status={order.status} />
+                </div>
+                <div className="mt-2 flex items-center gap-2 text-xs font-semibold">
+                  <span className={`font-mono tabular-nums ${late ? "text-red-700 dark:text-red-300" : "text-stone-500 dark:text-stone-400"}`}>
+                    ⏱ {minutes} min
+                  </span>
+                  {late ? <span className="rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-bold uppercase text-red-800 dark:bg-red-950 dark:text-red-200">Atrasada</span> : null}
+                  {order.party_size ? <span className="text-stone-500 dark:text-stone-400">Mesa de {order.party_size}</span> : null}
+                </div>
+                <div className="mt-3 space-y-1.5 border-t border-dashed border-[#e7d5bb] pt-3 dark:border-stone-700">
+                  {order.items.map((item, index) => (
+                    <p key={index} className="text-base font-semibold text-stone-900 dark:text-stone-100">
+                      <span className="font-mono font-black text-[#E65100]">{item.qty}× </span>
+                      {item.dish_name}
+                      {item.notes ? <span className="block pl-6 text-sm font-normal text-stone-500 dark:text-stone-400">{item.notes}</span> : null}
+                    </p>
+                  ))}
+                  {order.notes ? <p className="rounded-lg bg-amber-50 px-2 py-1 text-sm font-medium text-amber-800 dark:bg-amber-950 dark:text-amber-200">Nota: {order.notes}</p> : null}
+                  {order.customer_name ? (
+                    <p className="text-xs font-semibold text-stone-600 dark:text-stone-300">
+                      {order.customer_name} · llegada {order.eta ?? "—"}
+                    </p>
+                  ) : null}
+                </div>
+                <Button
+                  variant={order.status === "READY" ? "secondary" : "primary"}
+                  onClick={() => advance(order.id, order.status)}
+                  size="lg"
+                  className="mt-4 w-full text-base"
+                >
+                  {ACTION_LABEL[order.status] ?? "Avanzar"}
+                </Button>
+              </div>
+            </article>
+          );
+        })}
       </div>
-      <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {active.map((o) => (
-          <div key={o.id} className="rounded-xl border border-stone-200 bg-white p-4 shadow-md dark:border-stone-700 dark:bg-stone-900">
-            <div className="flex items-center justify-between gap-2">
-              <p className="font-mono text-2xl font-bold tabular-nums text-stone-900 dark:text-stone-100">M{o.table_number}</p>
-              <Badge status={o.status} />
-            </div>
-            <p className="mt-1 font-mono text-sm font-medium tabular-nums text-stone-600 dark:text-stone-400">⏱ {elapsed(o.created_at, now)}</p>
-            <div className="mt-2 space-y-1 border-t border-stone-100 pt-2 dark:border-stone-700">
-              {o.items.map((it, i) => (
-                <p key={i} className="font-sans text-base font-medium text-stone-900 dark:text-stone-100">
-                  <span className="font-mono font-bold tabular-nums">{it.qty}x </span>
-                  {it.dish_name}
-                  {it.notes ? <span className="text-stone-600 dark:text-stone-400"> · {it.notes}</span> : null}
-                </p>
-              ))}
-              {o.notes ? <p className="rounded-lg bg-amber-50 px-2 py-1 font-sans text-sm font-medium text-amber-800 dark:bg-amber-950 dark:text-amber-300">Nota: {o.notes}</p> : null}
-            </div>
-            <Button
-              variant={o.status === "READY" ? "secondary" : "primary"}
-              onClick={() => advance(o.id, o.status)}
-              size="lg"
-              className="mt-4 w-full min-h-14 text-base"
-            >
-              {ACTION_LABEL[o.status] ?? "Avanzar"}
-            </Button>
-          </div>
-        ))}
-      </div>
-      {active.length === 0 ? <p className="mt-8 font-sans text-base text-stone-500 dark:text-stone-300">Sin órdenes pendientes.</p> : null}
+
+      {active.length === 0 ? (
+        <div className="picada-card grid-lines p-10 text-center">
+          <p className="text-4xl" aria-hidden="true">🍳</p>
+          <h2 className="mt-2 text-xl font-extrabold">Cocina al día</h2>
+          <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">No hay comandas pendientes. Las nuevas aparecerán aquí.</p>
+        </div>
+      ) : null}
     </div>
   );
 }

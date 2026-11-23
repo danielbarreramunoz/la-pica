@@ -71,15 +71,16 @@ export function BottomSheet({
       role="dialog"
       aria-modal="true"
       aria-label={title}
-      className={`${shown ? "animate-fade" : "animate-fade-out"} fixed inset-0 z-[1200] bg-black/50`}
+      className={`${shown ? "animate-fade" : "animate-fade-out"} fixed inset-0 z-[1200] bg-[#160d08]/55 backdrop-blur-[2px]`}
       onClick={close}
     >
       <div
-        className={`${shown ? "animate-sheet" : "animate-sheet-out"} absolute inset-x-0 bottom-0 mx-auto max-h-[80dvh] w-full max-w-5xl overflow-y-auto rounded-t-2xl bg-white p-5 shadow-xl dark:bg-stone-900`}
+        className={`${shown ? "animate-sheet" : "animate-sheet-out"} absolute inset-x-0 bottom-0 mx-auto max-h-[82dvh] w-full max-w-5xl overflow-y-auto rounded-t-3xl border border-b-0 border-[#e7d5bb] bg-[#fffdf7] p-5 shadow-2xl dark:border-stone-700 dark:bg-stone-900`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-stone-300 dark:bg-stone-600" aria-hidden="true" />
-        <h2 className="font-sans text-lg font-bold text-stone-900 dark:text-stone-100">{title}</h2>
+        <div className="mx-auto mb-4 h-1.5 w-12 rounded-full bg-[#d9c5a9] dark:bg-stone-600" aria-hidden="true" />
+        <p className="picada-eyebrow">La Picá</p>
+        <h2 className="mt-1 text-xl font-extrabold tracking-tight text-stone-900 dark:text-stone-100">{title}</h2>
         <div className="mt-4">{children}</div>
       </div>
     </div>

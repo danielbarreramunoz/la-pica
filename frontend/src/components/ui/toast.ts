@@ -4,7 +4,13 @@ import * as React from "react";
 import { Toaster as SonnerToaster, toast } from "sonner";
 
 export function Toaster() {
-  return React.createElement(SonnerToaster, { richColors: true, position: "top-right" });
+  return React.createElement(SonnerToaster, {
+    richColors: true,
+    position: "top-center",
+    duration: 3500,
+    visibleToasts: 3,
+    closeButton: true,
+  });
 }
 
 export const showToast = {

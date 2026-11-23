@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Archivo_Black, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toast";
 
@@ -13,9 +13,15 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const archivoBlack = Archivo_Black({
+  variable: "--font-archivo-black",
+  subsets: ["latin"],
+  weight: "400",
+});
+
 export const metadata: Metadata = {
-  title: "La Picá · Admin",
-  description: "Panel de administración y menú del día",
+  title: "La Picá · Menú, pedidos y operación",
+  description: "Menú del día, comandas, caja e inventario de tu picada.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -23,7 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="es"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${archivoBlack.variable} h-full antialiased`}
     >
       <head>
         <script
@@ -32,7 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-stone-50 font-sans text-stone-900 dark:bg-stone-900 dark:text-stone-100">
+      <body className="flex min-h-full flex-col bg-[#f6efe1] font-sans text-stone-900 dark:bg-[#17110e] dark:text-stone-100">
         {children}
         <Toaster />
       </body>

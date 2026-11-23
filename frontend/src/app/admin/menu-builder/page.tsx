@@ -8,6 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { useAdminStore } from "@/stores/useAdminStore";
 import { menuService } from "@/services/menu.service";
 import { showToast } from "@/components/ui/toast";
+import { PageHero } from "@/components/layout/page-hero";
 
 export default function MenuBuilderPage() {
   const {
@@ -57,37 +58,29 @@ export default function MenuBuilderPage() {
 
   return (
     <div className="space-y-5">
-      <div className="border-b border-stone-200 pb-4 dark:border-stone-700">
-        <p className="font-mono text-xs font-semibold uppercase tracking-widest text-[#E65100]">
-          Menú del día · Programación
-        </p>
-        <h1 className="mt-1 font-sans text-3xl font-bold tracking-tight">Programador de menú del día</h1>
-      </div>
-
-      <div className="flex flex-wrap items-end gap-3">
-        <div className="w-52">
-          <p className="mb-1 font-sans text-xs text-stone-500 dark:text-stone-400">Fecha</p>
+      <PageHero
+        eyebrow="Menú del día · Programación"
+        title="Menú de hoy"
+        description="Elige qué platos del catálogo estarán disponibles hoy y destaca el plato del día."
+      >
+        <div className="flex items-center gap-2 rounded-xl bg-[#fff7ea]/10 p-1.5">
           <Input
             type="date"
             value={selectedDate}
-            onChange={(e) => setDate(e.target.value)}
+            onChange={(event) => setDate(event.target.value)}
+            className="w-44 border-[#f4d7b8]/25 bg-[#fff7ea]/95 text-stone-900"
           />
+          <Button variant="secondary" onClick={handleSave}>Guardar</Button>
         </div>
-        <Button variant="secondary" onClick={handleSave}>
-          Guardado rápido
-        </Button>
-      </div>
+      </PageHero>
 
-      <div className="space-y-2">
+      <div className="picada-card divide-y divide-dashed divide-[#e7d5bb] dark:divide-stone-700">
         {dishes.map((d) => {
           const active = selectedDishIds.includes(d.id);
           return (
-            <div
-              key={d.id}
-              className="flex items-center justify-between rounded-xl border border-stone-200 bg-white px-4 py-3 dark:border-stone-700 dark:bg-stone-800"
-            >
+            <div key={d.id} className="flex items-center justify-between gap-3 px-4 py-3">
               <div>
-                <p className="font-sans text-sm font-semibold">{d.name}</p>
+                <p className="font-sans text-sm font-bold">{d.name}</p>
                 <p className="font-mono text-sm text-[#E65100]">
                   ${d.base_price.toLocaleString("es-CL")} · {d.category}
                 </p>
@@ -98,8 +91,8 @@ export default function MenuBuilderPage() {
         })}
       </div>
 
-      <div className="rounded-xl border border-[#2E7D32]/30 bg-white p-4 dark:border-[#7cc47f]/30 dark:bg-stone-800">
-        <p className="font-sans text-sm font-semibold text-[#2E7D32] dark:text-[#7cc47f]">Plato del día / Ejecutivo</p>
+      <div className="picada-card border-l-4 border-l-[#2E7D32] p-4">
+        <p className="font-extrabold text-[#2E7D32] dark:text-[#7cc47f]">Plato del día / Ejecutivo</p>
         <div className="mt-3 flex flex-wrap gap-3">
           <div className="min-w-52 flex-1">
             <Select value={featuredDishId ?? ""} onChange={(e) => setFeatured(e.target.value || null)}>

@@ -27,20 +27,24 @@ export function Modal({
       role="dialog"
       aria-modal="true"
       aria-label={title}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+      className="animate-fade fixed inset-0 z-50 flex items-end justify-center bg-[#160d08]/60 p-0 backdrop-blur-[2px] sm:items-center sm:p-4"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md rounded-xl bg-white p-6 shadow-xl dark:bg-stone-800"
+        className="picada-card max-h-[92dvh] w-full max-w-lg overflow-y-auto rounded-b-none rounded-t-3xl border-0 p-5 sm:rounded-3xl sm:border sm:p-6"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="font-sans text-lg font-semibold text-stone-900 dark:text-stone-100">{title}</h2>
-        <div className="mt-4">{children}</div>
-        <div className="mt-6 flex justify-end">
-          <Button variant="ghost" onClick={onClose}>
-            Cerrar
+        <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-[#d9c5a9] sm:hidden" aria-hidden="true" />
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <p className="picada-eyebrow">La Picá</p>
+            <h2 className="mt-1 text-xl font-extrabold tracking-tight text-stone-900 dark:text-stone-100">{title}</h2>
+          </div>
+          <Button variant="ghost" size="sm" onClick={onClose} aria-label="Cerrar" className="h-9 w-9 shrink-0 rounded-full px-0 text-lg">
+            ×
           </Button>
         </div>
+        <div className="mt-4">{children}</div>
       </div>
     </div>
   );

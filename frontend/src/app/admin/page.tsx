@@ -5,79 +5,96 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useAdminStore } from "@/stores/useAdminStore";
+import { useOrderStore } from "@/stores/useOrderStore";
 import { menuService } from "@/services/menu.service";
+import { PageHero } from "@/components/layout/page-hero";
 
 export default function AdminDashboard() {
   const { dishes, setDishes, selectedDishIds, hydrateMenu, loading, setLoading } = useAdminStore();
+  const { orders, startRealtime } = useOrderStore();
 
   useEffect(() => {
+    const stop = startRealtime();
     (async () => {
       setLoading(true);
       const list = await menuService.listDishes();
       setDishes(list);
       const menu = await menuService.getDailyMenu();
-      hydrateMenu(menu.items.map((i) => i.dish_id));
+      hydrateMenu(menu.items.map((item) => item.dish_id));
       setLoading(false);
     })();
-  }, [setDishes, hydrateMenu, setLoading]);
+    return stop;
+  }, [setDishes, hydrateMenu, setLoading, startRealtime]);
 
-  const disponibles = dishes.filter((d) => d.is_active).length;
+  const disponibles = dishes.filter((dish) => dish.is_active).length;
+  const activeOrders = orders.filter((order) => ["PENDING", "IN_PREPARATION", "READY"].includes(order.status));
 
   return (
     <div className="space-y-6">
-      <div className="border-b border-stone-200 pb-5 dark:border-stone-700">
-        <p className="font-mono text-xs font-semibold uppercase tracking-widest text-[#E65100]">
-          Panel operativo · La Picá
-        </p>
-        <h1 className="mt-1 font-sans text-3xl font-bold tracking-tight text-stone-900 dark:text-stone-100">
-          Dashboard general
-        </h1>
-        <p className="mt-1 font-sans text-sm text-stone-600 dark:text-stone-400">
-          Resumen del menú del día, catálogo y estado de cocina en tiempo real.
-        </p>
-      </div>
-      {loading ? <p className="font-sans text-sm text-stone-600 dark:text-stone-400">Cargando…</p> : null}
-      <div className="grid gap-4 sm:grid-cols-3">
-        <div className="overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm dark:border-stone-700 dark:bg-stone-800">
-          <div className="h-1.5 bg-[#E65100]" aria-hidden="true" />
-          <div className="p-5">
-            <p className="font-sans text-sm font-medium text-stone-600 dark:text-stone-400">Menú activo hoy</p>
-            <p className="mt-1 font-mono text-4xl font-bold tabular-nums text-[#E65100]">
-              {selectedDishIds.length}
-            </p>
-            <p className="mt-1 font-sans text-xs text-stone-600 dark:text-stone-400">platos programados</p>
-          </div>
+      <PageHero
+        eyebrow="Administración · La Picá"
+        title="Todo el local, de un vistazo"
+        description="Menú del día, catálogo, cocina, caja e inventario en un mismo lugar."
+      >
+        <Link href="/admin/menu-builder"><Button>Programar menú de hoy</Button></Link>
+        <Link href="/inventory"><Button variant="ghost" className="border border-[#f4d7b8]/30 text-[#fff7ea] hover:bg-[#fff7ea]/15 hover:text-[#fff7ea] dark:text-[#fff7ea] dark:hover:bg-[#fff7ea]/15">Inventario</Button></Link>
+      </PageHero>
+
+      {loading ? <p className="text-sm text-stone-600 dark:text-stone-400">Cargando…</p> : null}
+
+      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="picada-card border-l-4 border-l-[#E65100] p-5">
+          <p className="picada-eyebrow">Menú activo hoy</p>
+          <p className="mt-1 font-mono text-4xl font-black tabular-nums text-[#E65100]">{selectedDishIds.length}</p>
+          <p className="mt-1 text-xs text-stone-500 dark:text-stone-400">platos programados</p>
         </div>
-        <div className="overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm dark:border-stone-700 dark:bg-stone-800">
-          <div className="h-1.5 bg-[#2E7D32]" aria-hidden="true" />
-          <div className="p-5">
-            <p className="font-sans text-sm font-medium text-stone-600 dark:text-stone-400">Platos disponibles</p>
-            <p className="mt-1 font-mono text-4xl font-bold tabular-nums text-[#2E7D32] dark:text-[#7cc47f]">
-              {disponibles}
-            </p>
-            <p className="mt-1 font-sans text-xs text-stone-600 dark:text-stone-400">de {dishes.length} en catálogo</p>
-          </div>
+        <div className="picada-card border-l-4 border-l-[#2E7D32] p-5">
+          <p className="picada-eyebrow">Platos disponibles</p>
+          <p className="mt-1 font-mono text-4xl font-black tabular-nums text-[#2E7D32] dark:text-[#7cc47f]">{disponibles}</p>
+          <p className="mt-1 text-xs text-stone-500 dark:text-stone-400">de {dishes.length} en catálogo</p>
         </div>
-        <div className="rounded-xl border border-stone-200 bg-white p-5 shadow-sm dark:border-stone-700 dark:bg-stone-800">
-          <p className="font-sans text-sm font-medium text-stone-600 dark:text-stone-400">Estado cocina</p>
-          <div className="mt-3 flex flex-wrap gap-2">
+        <div className="picada-card border-l-4 border-l-[#f3b62c] p-5">
+          <p className="picada-eyebrow">Comandas activas</p>
+          <p className="mt-1 font-mono text-4xl font-black tabular-nums text-[#b47a00] dark:text-[#f3b62c]">{activeOrders.length}</p>
+          <p className="mt-1 text-xs text-stone-500 dark:text-stone-400">en cocina y servicio</p>
+        </div>
+        <div className="picada-card p-5">
+          <p className="picada-eyebrow">Estado cocina</p>
+          <div className="mt-3 flex flex-wrap gap-1.5">
             <Badge status="PENDING" />
             <Badge status="IN_PREPARATION" />
             <Badge status="READY" />
           </div>
-          <p className="mt-2 font-sans text-xs text-stone-600 dark:text-stone-400">Comandas en curso (KDS)</p>
+          <p className="mt-2 text-xs text-stone-500 dark:text-stone-400">Actualización en tiempo real</p>
         </div>
-      </div>
-      <div className="flex flex-wrap gap-3">
-        <Link href="/admin/menu-builder">
-          <Button size="lg">Programar menú de hoy</Button>
+      </section>
+
+      <section className="grid gap-4 md:grid-cols-2">
+        <Link href="/admin/dishes" className="picada-card group p-5 transition hover:-translate-y-0.5 hover:border-[#e65100]/40">
+          <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Catálogo</p>
+          <h2 className="mt-1 text-xl font-extrabold">Gestionar platos</h2>
+          <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">Precios, categorías, descripciones y disponibilidad.</p>
+          <span className="mt-3 inline-block text-sm font-bold text-[#E65100] group-hover:underline">Abrir catálogo →</span>
         </Link>
-        <Link href="/admin/dishes">
-          <Button variant="secondary" size="lg">
-            Gestionar platos
-          </Button>
+        <Link href="/admin/menu-builder" className="picada-card group p-5 transition hover:-translate-y-0.5 hover:border-[#e65100]/40">
+          <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Menú del día</p>
+          <h2 className="mt-1 text-xl font-extrabold">Programar el menú</h2>
+          <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">Elige los platos que estarán disponibles hoy.</p>
+          <span className="mt-3 inline-block text-sm font-bold text-[#E65100] group-hover:underline">Abrir programador →</span>
         </Link>
-      </div>
+        <Link href="/kitchen" className="picada-card group p-5 transition hover:-translate-y-0.5 hover:border-[#e65100]/40">
+          <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Cocina</p>
+          <h2 className="mt-1 text-xl font-extrabold">Comandas en vivo</h2>
+          <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">Revisa el avance de cada mesa y puesto.</p>
+          <span className="mt-3 inline-block text-sm font-bold text-[#E65100] group-hover:underline">Abrir cocina →</span>
+        </Link>
+        <Link href="/inventory" className="picada-card group p-5 transition hover:-translate-y-0.5 hover:border-[#e65100]/40">
+          <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">Bodega</p>
+          <h2 className="mt-1 text-xl font-extrabold">Inventario y compras</h2>
+          <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">Existencias, mínimos y lista de reposición.</p>
+          <span className="mt-3 inline-block text-sm font-bold text-[#E65100] group-hover:underline">Abrir inventario →</span>
+        </Link>
+      </section>
     </div>
   );
 }

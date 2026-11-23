@@ -59,7 +59,7 @@ export function ThemeToggle() {
       onClick={toggle}
       aria-label={dark ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
       title={dark ? "Modo claro" : "Modo oscuro"}
-      className="rounded-full border border-stone-200 bg-white/90 px-2.5 shadow-sm backdrop-blur dark:border-stone-700 dark:bg-stone-800/90"
+      className="rounded-full border border-[#d9c5a9] bg-[#fffaf0] px-2.5 text-stone-700 shadow-sm hover:bg-[#ffe8ce] dark:border-stone-600 dark:bg-stone-900 dark:text-stone-200 dark:hover:bg-stone-800"
     >
       {dark ? <SunIcon /> : <MoonIcon />}
     </Button>

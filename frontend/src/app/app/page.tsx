@@ -102,7 +102,7 @@ export default function PublicSearchPage() {
   return (
     <div>
       {/* Solo mapa a pantalla completa; al tocar un pin sube la ficha */}
-      <div className="relative h-[calc(100dvh-4rem)] w-full">
+      <div className="relative h-[calc(100dvh-4.4rem)] w-full">
         <ClientMap
           lat={curLat}
           lng={curLng}
@@ -115,28 +115,31 @@ export default function PublicSearchPage() {
             value={String(radiusKm)}
             onChange={(e) => setRadius(Number(e.target.value))}
             aria-label="Radio de búsqueda"
-            className="w-24 shadow-md"
+            className="w-24 border-[#e7d5bb] bg-[#fffaf0]/95 shadow-md backdrop-blur dark:border-stone-700 dark:bg-stone-900/95"
           >
             <option value="1">1 km</option>
             <option value="3">3 km</option>
             <option value="5">5 km</option>
           </Select>
           <Button
-            variant="ghost"
+            variant="outline"
             size="sm"
             onClick={useGps}
             aria-label="Usar mi ubicación"
             title="Usar mi ubicación"
-            className="rounded-full! border border-stone-200 bg-white/90 px-2.5! shadow-md backdrop-blur dark:border-stone-700 dark:bg-stone-800/90"
+            className="rounded-full px-2.5"
           >
             <GpsIcon />
           </Button>
+        </div>
+        <div className="absolute bottom-4 right-4 z-[500] rounded-full border border-[#e7d5bb] bg-[#fffaf0]/95 px-3 py-1.5 font-mono text-[11px] font-bold text-[#7a2e16] shadow-md backdrop-blur dark:border-stone-700 dark:bg-stone-900/95 dark:text-orange-200">
+          {filtered.length} picadas cerca
         </div>
       </div>
 
       <BottomSheet open={sheetOpen} onClose={closeSheet} title={selected?.name ?? "Picada"}>
         {selected ? (
-          <div className="space-y-2 pb-2">
+          <div className="space-y-3 pb-2">
             {selected.cover_url ? (
               <div className="relative h-36 w-full overflow-hidden rounded-xl">
                 <Image
@@ -148,24 +151,22 @@ export default function PublicSearchPage() {
                 />
               </div>
             ) : (
-              <div className="flex h-36 w-full items-center justify-center rounded-xl bg-stone-100 font-sans text-sm font-medium text-stone-500 dark:bg-stone-800 dark:text-stone-400">
-                Sin foto
+              <div className="picada-grid-lines flex h-32 w-full items-center justify-center rounded-xl border border-dashed border-[#e7d5bb] bg-[#f6efe1] font-sans text-sm font-bold text-stone-500 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-400">
+                Picada de barrio
               </div>
             )}
-            <p className="font-mono text-xs font-medium tabular-nums text-stone-700 dark:text-stone-300">
+            <p className="font-mono text-xs font-bold tabular-nums text-stone-700 dark:text-stone-300">
               {fmtDist(selected.distance_m)} · {selected.address}
             </p>
-            <p className="font-sans text-sm text-stone-600 dark:text-stone-400">Colación: {selected.lunch_hours}</p>
+            <p className="text-sm text-stone-600 dark:text-stone-400">Colación: {selected.lunch_hours}</p>
             {selected.featured ? (
-              <p className="font-sans text-sm">
+              <p className="rounded-xl bg-[#edf5ee] px-3 py-2 text-sm text-green-900 dark:bg-green-950/40 dark:text-green-100">
                 Destacado: {selected.featured.name}{" "}
-                <span className="font-mono font-bold text-[#2E7D32] dark:text-[#7cc47f]">
-                  ${selected.featured.price.toLocaleString("es-CL")}
-                </span>
+                <span className="font-mono font-black">${selected.featured.price.toLocaleString("es-CL")}</span>
               </p>
             ) : null}
             <Link href={`/app/restaurant/${selected.id}`} onClick={() => setRestaurant(selected.id)}>
-              <Button className="mt-2 w-full bg-[#E65100]">Ver Menú de Hoy</Button>
+              <Button className="mt-2 w-full">Ver menú de hoy</Button>
             </Link>
           </div>
         ) : null}
